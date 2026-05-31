@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Library Book Inventory Manager</title>
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='style.css') }}">
+</head>
+
+<body>
+
+<div class="container">
+
+<h1>📚 Library Book Inventory Manager</h1>
+
+<div class="report">
+    <h3>Total Books: {{ report.total_books }}</h3>
+    <h3>Issued Books: {{ report.issued_books }}</h3>
+    <h3>Available Books: {{ report.available_books }}</h3>
+</div>
+
+<form action="/add" method="post">
+
+<input type="text"
+       name="title"
+       placeholder="Book Title"
+       required>
+
+<input type="text"
+       name="author"
+       placeholder="Author Name"
+       required>
+
+<button>Add Book</button>
+
+</form>
+
+<form action="/search" method="get">
+
+<input type="text"
+       name="keyword"
+       placeholder="Search Book">
+
+<button>Search</button>
+
+</form>
+
+<table>
+
+<tr>
+    <th>Title</th>
+    <th>Author</th>
+    <th>Status</th>
+    <th>Action</th>
+</tr>
+
+{% for book in books %}
+<tr>
+
+<td>{{ book.title }}</td>
+
+<td>{{ book.author }}</td>
+
+<td>
+{% if book.issued %}
+Issued
+{% else %}
+Available
+{% endif %}
+</td>
+
+<td>
+
+{% if not book.issued %}
+<a href="/issue/{{ book.title }}">
+<button class="issue">
+Issue
+</button>
+</a>
+
+{% else %}
+
+<a href="/return/{{ book.title }}">
+<button class="return">
+Return
+</button>
+</a>
+
+{% endif %}
+
+</td>
+
+</tr>
+
+{% endfor %}
+
+</table>
+
+</div>
+
+</body>
+</html>
